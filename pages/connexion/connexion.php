@@ -24,31 +24,31 @@ echo $user['role'];
 if($user['role'] == "patient"){
     
     
-   header("Location: ../patient/patient.php");
+   header("Location: ../patient/dashboard.php");
    exit();
 }elseif($user['role'] == "medecin"){
 
     
-   header("Location: ../prosante/medecin/medecin.php");
+   header("Location: ../dashboard/medecin/dashboard.php");
    exit();
 }elseif($user['role'] == "infirmier"){
   
     
 
     
-   header("Location: ../prosante/infirmier/infirmier.php");
+   header("Location: ../dashboard/infirmier/dashboard.php");
    exit();
 }elseif($user['role'] == "pharmacie"){
    
     
 
     
-   header("Location: ../prosante/pharmacie/pharmacie.php");
+   header("Location: ../dashboard/pharmacie/dashboard.php");
    exit();
 }elseif($user['role'] == "labo"){
    
     
-   header("Location: ../prosante/laboratoire/laboratoire.php");
+   header("Location: ../dashboard/laboratoire/dashboard.php");
    exit();
 }
 }else{
