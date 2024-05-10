@@ -5,59 +5,86 @@ require_once '../includes/connect.php';
 $nom = $_POST['nom'];
 $prenom = $_POST['prenom'];
 $email = $_POST['email'];
-$password = $_POST['password'];
-$num_tel = $_POST['num_tel'];
-$address = $_POST['address'];
-$role = $_POST['role'];
+$mot_de_passe = $_POST['mot_de_passe'];
+$telephone = $_POST['telephone'];
+$adresse = $_POST['adresse'];
+$type_utilisateur = $_POST['type_utilisateur'];
 
 var_dump($_POST);
 
 $pdo = connect();
 //creation de id unique 
-$id = uniqid();
-$sql = "INSERT INTO user (id,nom, prenom, email, password, num_tel, address, role) VALUES (:id,:nom, :prenom, :email, :password, :num_tel, :address, :role)";
+//$id_user = uniqid();
+$sql = "INSERT INTO users (id_user,nom, prenom, email, mot_de_passe, telephone, adresse, type_utilisateur) VALUES (:id_user,:nom, :prenom, :email, :mot_de_passe, :telephone, :adresse, :type_utilisateur)";
 $statment = $pdo->prepare($sql);
 $statment->execute([
-    ':id' => $id,
+    ':id_user' => $id_user,
     ':nom' => $nom,
     ':prenom' => $prenom,
     ':email' => $email,
-    ':password' => $password,
-    ':num_tel' => $num_tel,
-    ':address' => $address,
-    ':role' => $role,
+    ':mot_de_passe' => $mot_de_passe,
+    ':telephone' => $telephone,
+    ':adresse' => $adresse,
+    ':type_utilisateur' => $type_utilisateur,
 ]);
  
+if($type_utilisateur == "patient"){
+    $sql = "INSERT INTO patients (id_patient,nom, prenom, email, mot_de_passe, telephone,image, adresse, type_utilisateur) VALUES (:id_patient,:nom, :prenom, :email, :mot_de_passe, :telephone,:image, :adresse, :type_utilisateur)";
+    $statment = $pdo->prepare($sql);
+    $statment->execute([
+    ':id_patient' => $id_user,
+    ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':mot_de_passe' => $mot_de_passe,
+    ':telephone' => $telephone,
+    'image'=> null,
+    ':adresse' => $adresse,
+    ':type_utilisateur' => $type_utilisateur,
+    ]);
+}else{
+    $sql = "INSERT INTO professionnels (id_professionnel,nom, prenom, email, mot_de_passe, telephone,image, adresse, type_professionnel) VALUES (:id_professionnel,:nom, :prenom, :email, :mot_de_passe, :telephone,:image, :adresse, :type_professionnel)";
+    $statment = $pdo->prepare($sql);
+    $statment->execute([
+    ':id_professionnel' => $id_user,
+    ':nom' => $nom,
+    ':prenom' => $prenom,
+    ':email' => $email,
+    ':mot_de_passe' => $mot_de_passe,
+    ':telephone' => $telephone,
+    'image'=> null,
+    ':adresse' => $adresse,
+    ':type_professionnel' => $type_utilisateur,
+    ]);
+}
 
-
-
-if($role == "patient"){
+if($type_utilisateur == "patient"){
     
      // Redirection vers la page d'accueil
     header("Location: ../patient/dashboard.php");
     exit();
-}elseif($role == "medecin"){
+}elseif($type_utilisateur == "medecin"){
     
      
 
      // Redirection vers la page d'accueil
     header("Location: ../medecin/dashboard.php");
     exit();
-}elseif($role == "infirmier"){
+}elseif($type_utilisateur == "infirmier"){
    
      
 
      // Redirection vers la page d'accueil
     header("Location: ../infirmier/dashboard.php");
     exit();
-}elseif($role == "pharmacie"){
+}elseif($type_utilisateur == "pharmacie"){
     
      
 
      // Redirection vers la page d'accueil
     header("Location: ../pharmacie/dashboard.php");
     exit();
-}elseif($role == "labo"){
+}elseif($type_utilisateur == "labo"){
     
      // Redirection vers la page d'accueil
     header("Location: ../laboratoire/dashboard.php");
