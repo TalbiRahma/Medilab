@@ -367,8 +367,8 @@
                   <label>Numéro téléphone</label>
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" 
-                    name="num_tel"
-                    placeholder="num_tel" aria-label="num_tel" aria-describedby="num_tel" value="">
+                    name="telephone"
+                    placeholder="telephone" aria-label="telephone" aria-describedby="telephone" value="">
                   </div>
                   <label>Email</label>
                   <div class="input-group mb-3">
@@ -376,19 +376,34 @@
                     name="email"
                     placeholder="email" aria-label="email" aria-describedby="email" value="">
                   </div>
+                  <div class="input-group mb-3">
                   <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="lieux" id="customRadio1" value="adomicile">
+                    <input class="form-check-input" type="radio" name=" type_demande" id="customRadio1" value="rendez_vous">
+                    <label class="custom-control-label" for="customRadio1">rendez_vous</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name=" type_demande" id="customRadio2" value="service">
+                    <label class="custom-control-label" for="customRadio2">service</label>
+                  </div>
+                  </div>
+                  <div class="input-group mb-3">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio1" value="domicile">
                     <label class="custom-control-label" for="customRadio1">à domicile</label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="lieux" id="customRadio2" value="cabinet">
+                    <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio2" value="cabinet">
                     <label class="custom-control-label" for="customRadio2">Cabinet</label>
                   </div>
+                  </div>
                   <div class="form-group">
-                    <label for="example-datetime-local-input" class="form-control-label">Date Heure</label>
-                    <input class="form-control" type="datetime-local" value="2018-11-23T10:30:00" id="example-datetime-local-input">
+                      <label for="example-date-input" class="form-control-label">Date</label>
+                      <input class="form-control" type="date" name="date_souhaitee"value="2018-11-23" id="example-date-input">
+                  </div>
+                  <div class="form-group">
+                    <label for="example-time-input" class="form-control-label">Time</label>
+                    <input class="form-control" type="time" name="heure_souhaitee"value="10:30:00" id="example-time-input">
                 </div>
-
                 <div class="form-group">
                   <label for="exampleFormControlTextarea1">Description</label>
                   <textarea name="description"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
