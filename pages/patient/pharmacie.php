@@ -1,17 +1,21 @@
-<!--
-=========================================================
-* Argon Dashboard 2 - v2.0.4
-=========================================================
+<?php
+require '../includes/connect.php';
+$pdo = connect() ;
+$sql = 'SELECT * FROM professionnels WHERE type_professionnel="pharmacie" ';
+$statement = $pdo->query($sql);
+// get all publishers
+$pharmacies = $statement->fetchAll(PDO::FETCH_ASSOC);
+//var_dump($pharmacies);
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
+session_start();
+ var_dump($_SESSION);
+ $email = $_SESSION['email'];
 
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+ $requette = "SELECT * FROM patients WHERE email='$email' ";
+ $statmnt = $pdo->query($requette);
+ $user = $statmnt->fetch(PDO::FETCH_ASSOC);
+ //var_dump($user);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -168,46 +172,52 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          
-                          <div class="d-flex flex-column justify-content-center">
+                    <?php
+                    foreach($pharmacies as $index =>$p){
+                      $index++;
+                      $id=$p['id_professionnel'];
+                      echo '<tr>
+                        <td>
+                          <div class="d-flex px-2 py-1">
                             
+                            <div class="d-flex flex-column justify-content-center">
+                              '.$index.'
+                            </div>
                           </div>
+                        </td>
+                        <td>
+                        <div>
+                              <img src="../../images/pharmacie.jpg" class="avatar avatar-sm me-3" alt="user1">
+                            </div>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                        <div class="d-flex flex-column justify-content-center">
+                          <p class="text-xs font-weight-bold mb-0">'.$p['nom'].'</p>
+                            
                         </div>
-                      </td>
-                      <td>
-                      <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                      <div class="d-flex flex-column justify-content-center">
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                          <p class="text-xs text-secondary mb-0">Organization</p>
-                      </div>
-                      </td>
+                        </td>
+                        
+                        <td >
+                        <div class="d-flex flex-column justify-content-center">
+                          <span class="text-secondary text-xs font-weight-bold">'.$p['adresse'].'</span>
+                        </div>
+                        </td>
+                        <td >
+                        
+                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-form">Demander</button>
+                        
+                        </td>
+                        <td class="align-middle">
+                        <div class="d-flex flex-column justify-content-center">
+                          <a href="pharmaciedetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          Voir plus
+                          </a>
+                        </div>
+                        </td>
+                      </tr>';
                       
-                      <td >
-                      <div class="d-flex flex-column justify-content-center">
-                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                      </div>
-                      </td>
-                      <td >
-                      
-                      <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-form">Demander</button>
-                      
-                      </td>
-                      <td class="align-middle">
-                      <div class="d-flex flex-column justify-content-center">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </div>
-                      </td>
-                    </tr>
-                    
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -341,60 +351,70 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
-<div class="col-md-4">
-   
-    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-        <div class="modal-content">
-          <div class="modal-body p-0">
-            <div class="card card-plain">
-              <div class="card-header pb-0 text-left">
-                <h3 class="font-weight-bolder text-info text-gradient">Nom Pharmacie</h3>
-                <p class="mb-0">Remplir le formulaire de votre demande</p>
-              </div>
-              <div class="card-body">
-                <form role="form text-left" action="" methode="POST">
-                  <label>Nom</label>
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="">
-                  </div>
-                  <label>Prénom</label>
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" 
-                    name="prenom"
-                    placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="">
-                  </div>
-                  <label>Numéro téléphone</label>
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control" 
-                    name="num_tel"
-                    placeholder="num_tel" aria-label="num_tel" aria-describedby="num_tel" value="">
-                  </div>
-                  <label>Email</label>
-                  <div class="input-group mb-3">
-                    <input type="email" class="form-control" 
-                    name="email"
-                    placeholder="email" aria-label="email" aria-describedby="email" value="">
-                  </div>
-                  <div class="form-group">
-                  <label>Uploader votre ordonnace</label>
-                  <input type="file" id="myfile" name="myfile">
-                  </div>
 
-                <div class="form-group">
-                  <label for="exampleFormControlTextarea1">Votre Adresse de Livraison:</label>
-                  <textarea name="description"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-                  <div class="text-center">
-                    <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Confirmer</button>
+<div class="col-md-4">
+<?php
+  foreach($pharmacies as $p){
+    echo '<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+              <div class="modal-content">
+                <div class="modal-body p-0">
+                  <div class="card card-plain">
+                    <div class="card-header pb-0 text-left">
+                      <h3 class="font-weight-bolder text-info text-gradient">'.$p['nom'].'</h3>
+                      <p class="mb-0">Remplir le formulaire de votre demande</p>
+                    </div>
+                    <div class="card-body">
+                      <form role="form text-left" action="pharmaciedemande.php" method="POST">
+                        <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
+                        <input type="hidden" name="id_professionnel" value="'.$p['id_professionnel'].'"/>
+                        <label>Nom</label>
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="'.$user['nom'].'">
+                        </div>
+                        <label>Prénom</label>
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" 
+                          name="prenom"
+                          placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="'.$user['prenom'].'">
+                        </div>
+                        <label>Numéro téléphone</label>
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" 
+                          name="telephone"
+                          placeholder="num_tel" aria-label="telephone" aria-describedby="num_tel" value="'.$user['telephone'].'">
+                        </div>
+                        <label>Email</label>
+                        <div class="input-group mb-3">
+                          <input type="email" class="form-control" 
+                          name="email"
+                          placeholder="email" aria-label="email" aria-describedby="email" value="'.$user['email'].'">
+                        </div>
+
+                        <div class="form-group">
+                        <label>Uploader votre ordonnace</label>
+                        <input type="file" id="myfile" name="ordonnance">
+                        </div>
+      
+                      <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Votre Adresse de Livraison:</label>
+                        <textarea name="description"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                      </div>
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Confirmer</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        
+';
+ }
+?>
 </div>
+
+
 </html>

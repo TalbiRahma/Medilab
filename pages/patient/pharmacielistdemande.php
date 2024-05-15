@@ -1,20 +1,37 @@
 
-
 <?php
 require '../includes/connect.php';
-$pdo = connect() ;
-$sql = 'SELECT * FROM professionnels WHERE type_professionnel="laboratoire" ';
-$statement = $pdo->query($sql);
-$laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
-//var_dump($laboratoires);
- session_start();
- var_dump($_SESSION);
- $email = $_SESSION['email'];
+$pdo = connect();
 
- $requette = "SELECT * FROM patients WHERE email='$email' ";
- $statmnt = $pdo->query($requette);
- $user = $statmnt->fetch(PDO::FETCH_ASSOC);
- //var_dump($user);
+session_start();
+$email = $_SESSION['email'];
+
+// Récupérer l'ID du patient
+$requete_patient = "SELECT * FROM patients WHERE email='$email'";
+$statement_patient = $pdo->query($requete_patient);
+$user = $statement_patient->fetch(PDO::FETCH_ASSOC);
+//var_dump($user);
+$id_patient = $user['id_patient'];
+
+// Récupérer toutes les demandes de l'utilisateur avec le type de professionnel "laboratoire"
+$requete_demandes = "SELECT demandes.*, professionnels.* 
+                    FROM demandes 
+                    INNER JOIN professionnels ON demandes.id_professionnel = professionnels.id_professionnel 
+                    WHERE demandes.id_patient=$id_patient 
+                    AND professionnels.type_professionnel='pharmacie'";
+$statement_demandes = $pdo->query($requete_demandes);
+$demandes = $statement_demandes->fetchAll(PDO::FETCH_ASSOC);
+
+// Parcourir chaque demande et afficher les données du professionnel
+foreach ($demandes as $demande) {
+    // Données de la demande
+    $id_pro = $demande['id_professionnel'];
+    $requete_professionnel = "SELECT * FROM professionnels WHERE id_professionnel=$id_pro  AND type_professionnel='pharmacie' " ;
+    $statement_professionnel = $pdo->query($requete_professionnel);
+    $professionnels = $statement_professionnel->fetchAll(PDO::FETCH_ASSOC);
+    //var_dump($professionnels);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,9 +42,9 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
     require '../includes/patient/header.php'; 
   ?>
   <title>
-    labo
+    labolist
   </title>
-  
+
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
@@ -169,15 +186,15 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom Laboratoire</th>
                       
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Adresse</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Demande Service</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Etat Demande</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                    foreach($laboratoires as $index =>$labo){
+                    foreach($demandes as $index =>$d){
                       $index++;
-                      $id=$labo['id_professionnel'];
+                      $id=$d['id_demande'];
                      
                       echo '<tr>
                         <td>
@@ -194,23 +211,25 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </td>
                         <td class="align-middle text-center text-sm">
-                        <div class="d-flex flex-column justify-content-center">
-                          <p class="text-xs font-weight-bold mb-0">'.$labo['nom'].'</p>
-                            
-                        </div>
+                        <div class="d-flex flex-column justify-content-center">';
+                        foreach($professionnels as $pro){
+                        echo '
+                          <p class="text-xs font-weight-bold mb-0">'.$pro['nom'].'</p>';
+                        } 
+                        echo '</div>
                         </td>
                         
                         <td >
                         <div class="d-flex flex-column justify-content-center">
-                          <span class="text-secondary text-xs font-weight-bold">'.$labo['adresse'].'</span>
+                          <span class="text-secondary text-xs font-weight-bold">'.$user['adresse'].'</span>
                         </div>
                         </td>
                         <td >
-                        <button type="submit" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-form">Demander</button>
+                            <span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>
                         </td>
                         <td class="align-middle">
                         <div class="d-flex flex-column justify-content-center">
-                          <a href="labodetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <a href="pharmaciedemandedetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           Voir plus
                           </a>
                         </div>
@@ -352,81 +371,5 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
-<div class="col-md-4">
-<?php
-  foreach($laboratoires as $labo){
-    echo '<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-              <div class="modal-content">
-                <div class="modal-body p-0">
-                  <div class="card card-plain">
-                    <div class="card-header pb-0 text-left">
-                      <h3 class="font-weight-bolder text-info text-gradient">'.$labo['nom'].'</h3>
-                      <p class="mb-0">Remplir le formulaire de votre demande</p>
-                    </div>
-                    <div class="card-body">
-                      <form role="form text-left" action="labodemande.php" method="POST">
-                        <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
-                        <input type="hidden" name="id_professionnel" value="'.$labo['id_professionnel'].'"/>
-                        <label>Nom</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="'.$user['nom'].'">
-                        </div>
-                        <label>Prénom</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" 
-                          name="prenom"
-                          placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="'.$user['prenom'].'">
-                        </div>
-                        <label>Numéro téléphone</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" 
-                          name="telephone"
-                          placeholder="num_tel" aria-label="telephone" aria-describedby="num_tel" value="'.$user['telephone'].'">
-                        </div>
-                        <label>Email</label>
-                        <div class="input-group mb-3">
-                          <input type="email" class="form-control" 
-                          name="email"
-                          placeholder="email" aria-label="email" aria-describedby="email" value="'.$user['email'].'">
-                        </div>
-                        <div class="form-check mb-3">
-                          <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio1" value="domicile">
-                          <label class="custom-control-label" for="customRadio1">à domicile</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio2" value="cabinet">
-                          <label class="custom-control-label" for="customRadio2">Cabinet</label>
-                        </div>
-                        <div class="form-group">
-                          <label for="example-date-input" class="form-control-label">Date</label>
-                          <input class="form-control" type="date" name="date_souhaitee"value="2018-11-23" id="example-date-input">
-                        </div>
-                        <div class="form-group">
-                          <label for="example-time-input" class="form-control-label">Time</label>
-                          <input class="form-control" type="time" name="heure_souhaitee"value="10:30:00" id="example-time-input">
-                        </div>
-                        <div class="form-group">
-                          <label>Uploader votre ordonnace</label>
-                          <input type="file" id="myfile" name="ordonnance">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleFormControlTextarea1">Description</label>
-                          <textarea name="description"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Confirmer</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        
-';
- }
-?>
-</div>
+
 </html>

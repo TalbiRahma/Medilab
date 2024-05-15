@@ -1,22 +1,19 @@
-
-
 <?php
+$iddemande=$_GET['id'];
 require '../includes/connect.php';
 $pdo = connect() ;
-$sql = 'SELECT * FROM professionnels WHERE type_professionnel="laboratoire" ';
-$statement = $pdo->query($sql);
-$laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
-//var_dump($laboratoires);
- session_start();
- var_dump($_SESSION);
- $email = $_SESSION['email'];
+$sql_demande = "SELECT * FROM demandes WHERE id_demande=$iddemande ";
+$statement_demande = $pdo->query($sql_demande);
+$demande = $statement_demande->fetch(PDO::FETCH_ASSOC);
+//var_dump($demande);
+ 
+$id_patient = $demande['id_patient'];
+$sql_patient = "SELECT * FROM patients WHERE id_patient=$id_patient ";
+$statement_patient = $pdo->query($sql_patient);
+$patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
+var_dump($patient);
 
- $requette = "SELECT * FROM patients WHERE email='$email' ";
- $statmnt = $pdo->query($requette);
- $user = $statmnt->fetch(PDO::FETCH_ASSOC);
- //var_dump($user);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,47 +22,75 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
     require '../includes/patient/header.php'; 
   ?>
   <title>
-    labo
+    phardemandedetails
   </title>
   
 </head>
 
-<body class="g-sidenav-show   bg-gray-100">
-<?php 
+<body class="g-sidenav-show bg-gray-100">
+  <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg'); background-position-y: 50%;">
+    <span class="mask bg-primary opacity-6"></span>
+  </div>
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/argon-dashboard/pages/dashboard.html " target="_blank">
+        <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold">Argon Dashboard 2</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <?php 
     require '../includes/patient/aside.php';
-  ?>
-  <main class="main-content position-relative border-radius-lg ">
+     ?>
+    <div class="sidenav-footer mx-3 ">
+      <div class="card card-plain shadow-none" id="sidenavCard">
+        <img class="w-50 mx-auto" src="../assets/img/illustrations/icon-documentation.svg" alt="sidebar_illustration">
+        <div class="card-body text-center p-3 w-100 pt-0">
+          <div class="docs-info">
+            <h6 class="mb-0">Need help?</h6>
+            <p class="text-xs font-weight-bold mb-0">Please check our docs</p>
+          </div>
+        </div>
+      </div>
+      <a href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard" target="_blank" class="btn btn-dark btn-sm w-100 mb-3">Documentation</a>
+      <a class="btn btn-primary btn-sm mb-0 w-100" href="https://www.creative-tim.com/product/argon-dashboard-pro?ref=sidebarfree" type="button">Upgrade to pro</a>
+    </div>
+  </aside>
+  <div class="main-content position-relative max-height-vh-100 h-100">
     <!-- Navbar -->
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
-      <div class="container-fluid py-1 px-3">
+    <nav class="navbar navbar-main navbar-expand-lg bg-transparent shadow-none position-absolute px-4 w-100 z-index-2 mt-n11">
+      <div class="container-fluid py-1">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Tables</li>
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 ps-2 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="text-white opacity-5" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Profile</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">Tables</h6>
+          <h6 class="text-white font-weight-bolder ms-2">Profile</h6>
         </nav>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <div class="collapse navbar-collapse me-md-0 me-sm-4 mt-sm-0 mt-2" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
               <input type="text" class="form-control" placeholder="Type here...">
             </div>
           </div>
-          <ul class="navbar-nav  justify-content-end">
+          <ul class="navbar-nav justify-content-end">
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-white font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
                 <span class="d-sm-inline d-none">Sign In</span>
               </a>
             </li>
-            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
-                <div class="sidenav-toggler-inner">
-                  <i class="sidenav-toggler-line bg-white"></i>
-                  <i class="sidenav-toggler-line bg-white"></i>
-                  <i class="sidenav-toggler-line bg-white"></i>
-                </div>
+            <li class="nav-item d-xl-none ps-3 pe-0 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-white p-0">
+                <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                  <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line bg-white"></i>
+                    <i class="sidenav-toggler-line bg-white"></i>
+                    <i class="sidenav-toggler-line bg-white"></i>
+                  </div>
+                </a>
               </a>
             </li>
             <li class="nav-item px-3 d-flex align-items-center">
@@ -77,12 +102,12 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
               <a href="javascript:;" class="nav-link text-white p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
-              <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
+              <ul class="dropdown-menu dropdown-menu-end px-2 py-3 ms-n4" aria-labelledby="dropdownMenuButton">
                 <li class="mb-2">
                   <a class="dropdown-item border-radius-md" href="javascript:;">
                     <div class="d-flex py-1">
                       <div class="my-auto">
-                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm  me-3 ">
+                        <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3">
                       </div>
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="text-sm font-weight-normal mb-1">
@@ -100,7 +125,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                   <a class="dropdown-item border-radius-md" href="javascript:;">
                     <div class="d-flex py-1">
                       <div class="my-auto">
-                        <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm bg-gradient-dark  me-3 ">
+                        <img src="../assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm bg-gradient-dark me-3">
                       </div>
                       <div class="d-flex flex-column justify-content-center">
                         <h6 class="text-sm font-weight-normal mb-1">
@@ -117,7 +142,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <li>
                   <a class="dropdown-item border-radius-md" href="javascript:;">
                     <div class="d-flex py-1">
-                      <div class="avatar avatar-sm bg-gradient-secondary  me-3  my-auto">
+                      <div class="avatar avatar-sm bg-gradient-secondary me-3 my-auto">
                         <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                           <title>credit-card</title>
                           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -151,82 +176,83 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
       </div>
     </nav>
     <!-- End Navbar -->
-    <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Laboratoires Médicaux</h6>
+    <div class="card shadow-lg mx-4 card-profile-bottom">
+      <div class="card-body p-3">
+        <div class="row gx-4">
+          <div class="col-auto">
+            <div class="avatar avatar-xl position-relative">
+              <img src="../../images/labo.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            </div>
+          </div>
+          <div class="col-auto my-auto">
+            <div class="h-100">
+              <h5 class="mb-1">
+                <?php 
+                   echo $patient['nom'].' '.$patient['prenom'];
+                ?>
+              </h5>
               
             </div>
-            <div class="card-body px-0 pt-0 pb-2">
-              <div class="table-responsive p-0">
-                <table class="table align-items-center mb-0">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom Laboratoire</th>
-                      
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Adresse</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Demande Service</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    foreach($laboratoires as $index =>$labo){
-                      $index++;
-                      $id=$labo['id_professionnel'];
-                     
-                      echo '<tr>
-                        <td>
-                          <div class="d-flex px-2 py-1">
-                            
-                            <div class="d-flex flex-column justify-content-center">
-                              '.$index.'
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                        <div>
-                              <img src="../../images/labo.jpg" class="avatar avatar-sm me-3" alt="user1">
-                            </div>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                        <div class="d-flex flex-column justify-content-center">
-                          <p class="text-xs font-weight-bold mb-0">'.$labo['nom'].'</p>
-                            
-                        </div>
-                        </td>
-                        
-                        <td >
-                        <div class="d-flex flex-column justify-content-center">
-                          <span class="text-secondary text-xs font-weight-bold">'.$labo['adresse'].'</span>
-                        </div>
-                        </td>
-                        <td >
-                        <button type="submit" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modal-form">Demander</button>
-                        </td>
-                        <td class="align-middle">
-                        <div class="d-flex flex-column justify-content-center">
-                          <a href="labodetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Voir plus
-                          </a>
-                        </div>
-                        </td>
-                      </tr>';
-                      
-                    }
-                    ?>
-                  </tbody>
-                </table>
+          </div>
+        
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header pb-0">
+              <div class="d-flex align-items-center">
+                <p class="mb-0">INFORMATIONS SUR LA DEMANDE</p>
+
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Nom et prenom de patient</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['nom'].' '.$patient['prenom']; ?></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Adresse e-mail</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['email']; ?></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Telephone</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['telephone']; ?></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Adresse</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['adresse']; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Télécharger</label>
+                    <p> <a href="" class="badge bg-gradient-primary"  style="margin-left: auto;" download="">ordonnance</a></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Adresse livraison</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['description']; ?></p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      
       </div>
-     
       <footer class="footer pt-3  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
@@ -260,7 +286,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
       </footer>
     </div>
-  </main>
+  </div>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
       <i class="fa fa-cog py-2"> </i>
@@ -305,12 +331,6 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
         <!-- Navbar Fixed -->
-        <div class="d-flex my-3">
-          <h6 class="mb-0">Navbar Fixed</h6>
-          <div class="form-check form-switch ps-0 ms-auto my-auto">
-            <input class="form-check-input mt-1 ms-auto" type="checkbox" id="navbarFixed" onclick="navbarFixed(this)">
-          </div>
-        </div>
         <hr class="horizontal dark my-sm-4">
         <div class="mt-2 mb-5 d-flex">
           <h6 class="mb-0">Light / Dark</h6>
@@ -334,10 +354,10 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="../../dashboard/assets/js/core/popper.min.js"></script>
-  <script src="../../dashboard/assets/js/core/bootstrap.min.js"></script>
-  <script src="../../dashboard/assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="../../dashboard/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -350,83 +370,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+  <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
-<div class="col-md-4">
-<?php
-  foreach($laboratoires as $labo){
-    echo '<div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-md" role="document">
-              <div class="modal-content">
-                <div class="modal-body p-0">
-                  <div class="card card-plain">
-                    <div class="card-header pb-0 text-left">
-                      <h3 class="font-weight-bolder text-info text-gradient">'.$labo['nom'].'</h3>
-                      <p class="mb-0">Remplir le formulaire de votre demande</p>
-                    </div>
-                    <div class="card-body">
-                      <form role="form text-left" action="labodemande.php" method="POST">
-                        <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
-                        <input type="hidden" name="id_professionnel" value="'.$labo['id_professionnel'].'"/>
-                        <label>Nom</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="'.$user['nom'].'">
-                        </div>
-                        <label>Prénom</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" 
-                          name="prenom"
-                          placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="'.$user['prenom'].'">
-                        </div>
-                        <label>Numéro téléphone</label>
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" 
-                          name="telephone"
-                          placeholder="num_tel" aria-label="telephone" aria-describedby="num_tel" value="'.$user['telephone'].'">
-                        </div>
-                        <label>Email</label>
-                        <div class="input-group mb-3">
-                          <input type="email" class="form-control" 
-                          name="email"
-                          placeholder="email" aria-label="email" aria-describedby="email" value="'.$user['email'].'">
-                        </div>
-                        <div class="form-check mb-3">
-                          <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio1" value="domicile">
-                          <label class="custom-control-label" for="customRadio1">à domicile</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio2" value="cabinet">
-                          <label class="custom-control-label" for="customRadio2">Cabinet</label>
-                        </div>
-                        <div class="form-group">
-                          <label for="example-date-input" class="form-control-label">Date</label>
-                          <input class="form-control" type="date" name="date_souhaitee"value="2018-11-23" id="example-date-input">
-                        </div>
-                        <div class="form-group">
-                          <label for="example-time-input" class="form-control-label">Time</label>
-                          <input class="form-control" type="time" name="heure_souhaitee"value="10:30:00" id="example-time-input">
-                        </div>
-                        <div class="form-group">
-                          <label>Uploader votre ordonnace</label>
-                          <input type="file" id="myfile" name="ordonnance">
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleFormControlTextarea1">Description</label>
-                          <textarea name="description"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                        <div class="text-center">
-                          <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Confirmer</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        
-';
- }
-?>
-</div>
+
 </html>

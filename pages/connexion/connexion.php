@@ -15,10 +15,13 @@ $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 var_dump($user);
 
+session_start();
+$_SESSION['email']=$user['email'];
+
 
 
 if($user['type_utilisateur'] == "patient"){
-    
+  
    var_dump($user);
    header("Location: ../patient/dashboard.php");
    exit();
