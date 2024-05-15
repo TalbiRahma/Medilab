@@ -184,8 +184,7 @@ foreach ($demandes as $demande) {
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom et Prenom de patient</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lieu</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date & Heure</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Adresse de livraison</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Etat</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
                     </tr>
@@ -221,11 +220,8 @@ foreach ($demandes as $demande) {
                         
                         <td >
                         <div class="d-flex flex-column justify-content-center">
-                          <span class="text-secondary text-xs font-weight-bold">'.$d['lieu_demande'].'</span>
+                          <span class="text-secondary text-xs font-weight-bold">'.$d['description'].'</span>
                         </div>
-                        </td>
-                        <td >
-                        <p class="text-xs font-weight-bold mb-0">'.$d['date_souhaitee'].' '.$d['heure_souhaitee'].'</p>
                         </td>
                         <td >
                         <span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>
