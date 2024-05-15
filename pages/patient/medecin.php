@@ -22,7 +22,7 @@ $medecins = $statement->fetchAll(PDO::FETCH_ASSOC);
     require '../includes/patient/header.php'; 
   ?>
   <title>
-    Argon Dashboard 2 by Creative Tim
+    medecin list
   </title>
   
 </head>
@@ -358,7 +358,7 @@ $medecins = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="col-md-4">
 <?php
-  foreach($medecins as $med){
+  foreach($medecins as $med){ 
     echo '
     <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-md" role="document">

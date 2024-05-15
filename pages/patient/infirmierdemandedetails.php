@@ -1,12 +1,24 @@
 <?php
-$id=$_GET['id'];
+$iddemande=$_GET['id'];
 require '../includes/connect.php';
 $pdo = connect() ;
-$sql = "SELECT * FROM professionnels WHERE id_professionnel=$id ";
-$statement = $pdo->query($sql);
+$sql_demande = "SELECT * FROM demandes WHERE id_demande=$iddemande ";
+$statement_demande = $pdo->query($sql_demande);
+$demande = $statement_demande->fetch(PDO::FETCH_ASSOC);
+//var_dump($demande);
 
-$med = $statement->fetch(PDO::FETCH_ASSOC);
-//var_dump($med);
+$id_patient = $demande['id_patient'];
+$sql_patient = "SELECT * FROM patients WHERE id_patient=$id_patient ";
+$statement_patient = $pdo->query($sql_patient); 
+$patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
+var_dump($patient);
+
+$id_professionnel  = $demande['id_professionnel'];
+$sql_patient = "SELECT * FROM professionnels WHERE id_professionnel =$id_professionnel  ";
+$statement_patient = $pdo->query($sql_patient);
+$pro = $statement_patient->fetch(PDO::FETCH_ASSOC);
+var_dump($patient);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +28,7 @@ $med = $statement->fetch(PDO::FETCH_ASSOC);
     require '../includes/patient/header.php'; 
   ?>
   <title>
-    meddetails
+    infdemandedetails
   </title>
   
 </head>
@@ -166,7 +178,7 @@ $med = $statement->fetch(PDO::FETCH_ASSOC);
               </ul>
             </li>
           </ul>
-        </div> 
+        </div>
       </div>
     </nav>
     <!-- End Navbar -->
@@ -175,21 +187,17 @@ $med = $statement->fetch(PDO::FETCH_ASSOC);
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
-              <img src="../../images/medecin.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+              <img src="../../images/infirmier.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
             </div>
-          </div>
+          </div> 
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
                 <?php 
-                   echo $med['nom'].' '.$med['prenom'];
+                  echo $pro['nom'];
                 ?>
               </h5>
-              <p class="mb-0 font-weight-bold text-sm">
-              <?php 
-                   echo $med['specialite'];
-                ?>
-              </p>
+              
             </div>
           </div>
         
@@ -202,7 +210,7 @@ $med = $statement->fetch(PDO::FETCH_ASSOC);
           <div class="card">
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
-                <p class="mb-0">INFORMATIONS DE L'UTILISATEUR</p>
+                <p class="mb-0">INFORMATIONS SUR LA DEMANDE</p>
 
               </div>
             </div>
@@ -210,30 +218,48 @@ $med = $statement->fetch(PDO::FETCH_ASSOC);
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="example-text-input" class="form-control-label">Nom et prenom de medecin</label>
-                    <p class="mb-0 font-weight-bold text-sm"><?php echo $med['nom'].' '.$med['prenom']; ?></p>
+                    <label for="example-text-input" class="form-control-label">Nom et prenom de patient</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['nom'].' '.$patient['prenom']; ?></p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Adresse e-mail</label>
-                    <p class="mb-0 font-weight-bold text-sm"><?php echo $med['email']; ?></p>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['email']; ?></p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Telephone</label>
-                    <p class="mb-0 font-weight-bold text-sm"><?php echo $med['telephone']; ?></p>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['telephone']; ?></p>
+                  </div>
+                </div> 
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Adresse</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['adresse']; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">lieu</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['lieu_demande']; ?></p>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="example-text-input" class="form-control-label">Adresse</label>
-                    <p class="mb-0 font-weight-bold text-sm"><?php echo $med['adresse']; ?></p>
+                    <label for="example-text-input" class="form-control-label">Date & Heure</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['date_souhaitee'].'   '.$demande['heure_souhaitee']; ?></p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Description</label>
+                    <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['description']; ?></p>
                   </div>
                 </div>
               </div>
-             
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <?php
-//var_dump($_POST);
+var_dump($_POST);
 require_once '../includes/connect.php';
 
 $pdo = connect();
@@ -14,5 +14,5 @@ $statment->execute([
     ':description' => $_POST['description']
 ]);
 
-//header("Location: medecinlistdemande.php"); 
+//header("Location: infirmierlistdemande.php"); 
   

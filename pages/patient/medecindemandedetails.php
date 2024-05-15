@@ -9,7 +9,7 @@ $demande = $statement_demande->fetch(PDO::FETCH_ASSOC);
 
 $id_patient = $demande['id_patient'];
 $sql_patient = "SELECT * FROM patients WHERE id_patient=$id_patient ";
-$statement_patient = $pdo->query($sql_patient);
+$statement_patient = $pdo->query($sql_patient); 
 $patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
 var_dump($patient);
 

@@ -1,17 +1,19 @@
-<!--
-=========================================================
-* Argon Dashboard 2 - v2.0.4
-=========================================================
+<?php
+require '../includes/connect.php';
+$pdo = connect() ;
+$sql = 'SELECT * FROM professionnels WHERE type_professionnel="infirmier" ';
+$statement = $pdo->query($sql);
+$infirmiers = $statement->fetchAll(PDO::FETCH_ASSOC);
+ //var_dump($infirmiers);
+ session_start();
+// var_dump($_SESSION);
+ $email = $_SESSION['email'];
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+ $requette = "SELECT * FROM patients WHERE email='$email' ";
+ $statmnt = $pdo->query($requette);
+ $user = $statmnt->fetch(PDO::FETCH_ASSOC);
+// var_dump($user);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +22,7 @@
     require '../includes/patient/header.php'; 
   ?>
   <title>
-    Argon Dashboard 2 by Creative Tim
+    infirmier list
   </title>
   
 </head>
@@ -151,7 +153,7 @@
         <div class="col-12">
           <div class="card mb-4">
             <div class="card-header pb-0">
-              <h6>Infirmiers</h6>
+              <h6>Infirmier</h6>
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -160,14 +162,19 @@
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom & Prénom</th>
-                      
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Adresse</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Demande Service</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
                     </tr>
                   </thead>
                   <tbody>
+                  <?php
+                    foreach($infirmiers as $index =>$inf){
+                      $index++;
+                      $id=$inf['id_professionnel'];
+                     
+                      echo '
                     <tr>
                       <td>
                         <div class="d-flex px-2 py-1">
@@ -179,19 +186,18 @@
                       </td>
                       <td>
                       <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
+                            <img src="../../images/infirmier.jpg" class="avatar avatar-sm me-3" alt="user1">
                           </div>
                       </td>
                       <td class="align-middle text-center text-sm">
                       <div class="d-flex flex-column justify-content-center">
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                          <p class="text-xs text-secondary mb-0">Organization</p>
+                        <p class="text-xs font-weight-bold mb-0">'.$inf['nom'].'</p>
+                         
                       </div>
                       </td>
-                      
                       <td >
                       <div class="d-flex flex-column justify-content-center">
-                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
+                        <span class="text-secondary text-xs font-weight-bold">'.$inf['adresse'].'</span>
                       </div>
                       </td>
                       <td >
@@ -201,13 +207,15 @@
                       </td>
                       <td class="align-middle">
                       <div class="d-flex flex-column justify-content-center">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                          Edit
+                        <a href="infirmierdetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          Voir Plus
                         </a>
                       </div>
                       </td>
-                    </tr>
-                    
+                    </tr>';
+                      
+                    }
+                    ?>
                   </tbody>
                 </table>
               </div>
@@ -341,51 +349,47 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
+
 <div class="col-md-4">
-    <button type="button" class="btn btn-block btn-default mb-3" data-bs-toggle="modal" data-bs-target="#modal-form">Form</button>
+<?php
+  foreach($infirmiers as $inf){ 
+    echo '
     <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-md" role="document">
         <div class="modal-content">
           <div class="modal-body p-0">
             <div class="card card-plain">
               <div class="card-header pb-0 text-left">
-                <h3 class="font-weight-bolder text-info text-gradient">Nom infirmier</h3>
+                <h3 class="font-weight-bolder text-info text-gradient">'.$inf['nom'].' '.$inf['prenom'].'</h3>
                 <p class="mb-0">Remplir le formulaire de votre demande</p>
               </div>
               <div class="card-body">
-                <form role="form text-left" action="" methode="POST">
+                <form role="form text-left" action="infirmierdemande.php" method="POST">
+                <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
+                        <input type="hidden" name="id_professionnel" value="'.$inf['id_professionnel'].'"/>
                   <label>Nom</label>
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="">
+                    <input type="text" class="form-control" name="nom" placeholder="nom" aria-label="nom" aria-describedby="email-addon" value="'.$user['nom'].'">
                   </div>
                   <label>Prénom</label>
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" 
                     name="prenom"
-                    placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="">
+                    placeholder="Prenom" aria-label="prenom" aria-describedby="prenom" value="'.$user['prenom'].'">
                   </div>
                   <label>Numéro téléphone</label>
                   <div class="input-group mb-3">
                     <input type="text" class="form-control" 
                     name="telephone"
-                    placeholder="telephone" aria-label="telephone" aria-describedby="telephone" value="">
+                    placeholder="telephone" aria-label="telephone" aria-describedby="telephone" value="'.$user['telephone'].'">
                   </div>
                   <label>Email</label>
                   <div class="input-group mb-3">
                     <input type="email" class="form-control" 
                     name="email"
-                    placeholder="email" aria-label="email" aria-describedby="email" value="">
+                    placeholder="email" aria-label="email" aria-describedby="email" value="'.$user['email'].'">
                   </div>
-                  <div class="input-group mb-3">
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name=" type_demande" id="customRadio1" value="rendez_vous">
-                    <label class="custom-control-label" for="customRadio1">rendez_vous</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name=" type_demande" id="customRadio2" value="service">
-                    <label class="custom-control-label" for="customRadio2">service</label>
-                  </div>
-                  </div>
+                  
                   <div class="input-group mb-3">
                   <div class="form-check mb-3">
                     <input class="form-check-input" type="radio" name="lieu_demande" id="customRadio1" value="domicile">
@@ -418,6 +422,11 @@
         </div>
       </div>
     </div>
-  </div>
+  
+  ';
+ }
+?>
 </div>
+
 </html>
+
