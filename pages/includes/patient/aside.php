@@ -90,6 +90,6 @@
         </div>
       </div>
      
-      <a class="btn btn-primary btn-sm mb-0 w-100" href="https://www.creative-tim.com/product/argon-dashboard-pro?ref=sidebarfree" type="button">Se déconnecter</a>
+      <a class="btn btn-primary btn-sm mb-0 w-100" href="../connexion/deconnexion.php" type="button">Se déconnecter</a>
     </div>
   </aside>

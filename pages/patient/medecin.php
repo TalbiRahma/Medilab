@@ -368,7 +368,7 @@ $medecins = $statement->fetchAll(PDO::FETCH_ASSOC);
               <div class="card-header pb-0 text-left">
                 <h3 class="font-weight-bolder text-info text-gradient">'.$med['nom'].' '.$med['prenom'].'</h3>
                 <p class="mb-0">Remplir le formulaire de votre demande</p>
-              </div>
+              </div> 
               <div class="card-body">
                 <form role="form text-left" action="medecindemande.php" method="POST">
                 <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
