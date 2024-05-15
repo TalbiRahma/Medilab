@@ -32,21 +32,17 @@ if($user['type_utilisateur'] == "patient"){
    exit();
 }elseif($user['type_utilisateur'] == "infirmier"){
   
-    
-
    var_dump($user);
    header("Location: ../infirmier/dashboard.php");
    exit();
 }elseif($user['type_utilisateur'] == "pharmacie"){
    
-    
-
    var_dump($user);
    header("Location: ../pharmacie/dashboard.php");
    exit();
-}elseif($user['type_utilisateur'] == "labo"){
+}elseif($user['type_utilisateur'] == "laboratoire"){
    
    var_dump($user);
-   header("Location: ../laboratoire/dashboard.php");
+   header("Location: ../labo/dashboard.php");
    exit();
 }

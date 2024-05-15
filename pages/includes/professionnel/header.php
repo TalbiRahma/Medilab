@@ -8,7 +8,6 @@
   <link href="../../dashboard/assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="../../dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />
   <link href="../css/logo.css" rel="stylesheet" />
-
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="../../dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />

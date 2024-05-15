@@ -6,32 +6,32 @@ $pdo = connect();
 session_start();
 $email = $_SESSION['email'];
 
-// Récupérer l'ID du patient
-$requete_patient = "SELECT * FROM patients WHERE email='$email'";
-$statement_patient = $pdo->query($requete_patient);
-$user = $statement_patient->fetch(PDO::FETCH_ASSOC);
-//var_dump($user);
-$id_patient = $user['id_patient'];
+// Récupérer l'ID du professionnel
+$requete_professionnel = "SELECT * FROM professionnels WHERE email='$email'";
+$statement_professionnel = $pdo->query($requete_professionnel);
+$professionnel = $statement_professionnel->fetch(PDO::FETCH_ASSOC);
+$id_professionnel = $professionnel['id_professionnel'];
 
-// Récupérer toutes les demandes de l'utilisateur avec le type de professionnel "laboratoire"
-$requete_demandes = "SELECT demandes.*, professionnels.* 
+// Récupérer toutes les demandes de ce professionnel
+$requete_demandes = "SELECT demandes.*, patients.* 
                     FROM demandes 
-                    INNER JOIN professionnels ON demandes.id_professionnel = professionnels.id_professionnel 
-                    WHERE demandes.id_patient=$id_patient 
-                    AND professionnels.type_professionnel='medecin'";
+                    INNER JOIN patients ON demandes.id_patient = patients.id_patient
+                    WHERE demandes.id_professionnel=$id_professionnel";
 $statement_demandes = $pdo->query($requete_demandes);
 $demandes = $statement_demandes->fetchAll(PDO::FETCH_ASSOC);
 
-// Parcourir chaque demande et afficher les données du professionnel
+// Afficher les données des demandes et des patients associés
 foreach ($demandes as $demande) {
     // Données de la demande
-    $id_pro = $demande['id_professionnel'];
-    $requete_professionnel = "SELECT * FROM professionnels WHERE id_professionnel=$id_pro  AND type_professionnel='medecin' " ;
-    $statement_professionnel = $pdo->query($requete_professionnel);
-    $professionnels = $statement_professionnel->fetchAll(PDO::FETCH_ASSOC);
-   // var_dump($professionnels);
-}
+    //var_dump($demande);
 
+    // Données du patient associé à la demande
+    $id_patient = $demande['id_patient'];
+    $requete_patient = "SELECT * FROM patients WHERE id_patient=$id_patient";
+    $statement_patient = $pdo->query($requete_patient);
+    $patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
+    //var_dump($patient);
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,17 +39,17 @@ foreach ($demandes as $demande) {
 
 <head>
 <?php 
-    require '../includes/patient/header.php'; 
+      require '../includes/professionnel/header.php'; 
   ?>
   <title>
-    meddemandelist
+    histdemandelist
   </title>
 
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
 <?php 
-    require '../includes/patient/aside.php';
+     require '../includes/professionnel/medecin/aside.php';
   ?>
   <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
@@ -183,10 +183,10 @@ foreach ($demandes as $demande) {
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom et Prenom Medecin</th>
-                      
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Adresse</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Etat Demande</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom et Prenom de patient</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lieu</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date & Heure</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Etat</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
                     </tr>
                   </thead>
@@ -212,24 +212,29 @@ foreach ($demandes as $demande) {
                         </td>
                         <td class="align-middle text-center text-sm">
                         <div class="d-flex flex-column justify-content-center">';
-                        foreach($professionnels as $pro){
+                      
                         echo '
-                          <p class="text-xs font-weight-bold mb-0">'.$pro['nom'].' '.$pro['prenom'].'</p>';
-                        } 
+                          <p class="text-xs font-weight-bold mb-0">'.$patient['nom'].' '.$patient['prenom'].'</p>';
+                        
                         echo '</div>
                         </td>
                         
                         <td >
                         <div class="d-flex flex-column justify-content-center">
-                          <span class="text-secondary text-xs font-weight-bold">'.$user['adresse'].'</span>
+                          <span class="text-secondary text-xs font-weight-bold">'.$d['lieu_demande'].'</span>
                         </div>
                         </td>
                         <td >
-                            <span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>
+                        <p class="text-xs font-weight-bold mb-0">'.$d['date_souhaitee'].' '.$d['heure_souhaitee'].'</p>
+                        </td>
+                        <td >
+                        <span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>
+                        <span class="badge bg-gradient-success">'.$d['etat_demande'].'</span>
+                        <span class="badge bg-gradient-danger">'.$d['etat_demande'].'</span>
                         </td>
                         <td class="align-middle">
                         <div class="d-flex flex-column justify-content-center">
-                          <a href="medecindemandedetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                          <a href="demandedetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                           Voir plus
                           </a>
                         </div>
