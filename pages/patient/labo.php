@@ -351,7 +351,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
-</body>
+</body> 
 <div class="col-md-4">
 <?php
   foreach($laboratoires as $labo){
@@ -418,7 +418,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                           <button type="submit" class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Confirmer</button>
                         </div>
                       </form>
-                    </div>
+                    </div> 
                   </div>
                 </div>
               </div>

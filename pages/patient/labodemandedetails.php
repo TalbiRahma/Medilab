@@ -13,6 +13,11 @@ $statement_patient = $pdo->query($sql_patient);
 $patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
 var_dump($patient);
 
+$id_professionnel  = $demande['id_professionnel'];
+$sql_patient = "SELECT * FROM professionnels WHERE id_professionnel =$id_professionnel  ";
+$statement_patient = $pdo->query($sql_patient);
+$pro = $statement_patient->fetch(PDO::FETCH_ASSOC);
+var_dump($patient);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,12 +188,12 @@ var_dump($patient);
             <div class="avatar avatar-xl position-relative">
               <img src="../../images/labo.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
             </div>
-          </div>
+          </div> 
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
                 <?php 
-                   echo $patient['nom'].' '.$patient['prenom'];
+                   echo $pro['nom'].' '.$pro['prenom'];
                 ?>
               </h5>
               

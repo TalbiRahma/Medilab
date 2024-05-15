@@ -35,11 +35,11 @@
 
                             <span class="nav-link-text ms-4 text-dark">Pharmacie demandes</span>
                         </a>
-                        <a class="nav-link " href="pharmacielistdemande.php">
+                        <a class="nav-link " href="medecinlistdemande.php">
 
                             <span class="nav-link-text ms-4 text-dark">Médecin demandes</span>
                         </a>
-                        <a class="nav-link " href="pharmacielistdemande.php">
+                        <a class="nav-link " href="infirmierlistdemande.php">
 
                             <span class="nav-link-text ms-4 text-dark">Infirmier demandes</span>
                         </a>
