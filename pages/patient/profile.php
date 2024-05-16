@@ -1,19 +1,355 @@
+<?php
+require '../includes/connect.php';
+$pdo = connect();
+session_start();
+
+// Assurez-vous que l'utilisateur est connecté
+if (!isset($_SESSION['email'])) {
+  header('Location: ../connexion/connexion.html');
+  exit();
+}
+
+$email = $_SESSION['email'];
+
+$sql = "SELECT * FROM patients WHERE email = :email";
+$statement = $pdo->prepare($sql);
+$statement->execute([':email' => $email]);
+$patient = $statement->fetch(PDO::FETCH_ASSOC);
+
+if (!$patient) {
+  echo "Patient non trouvé.";
+  exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<?php 
+  <?php
+  require '../includes/patient/header.php';
+  ?>
+  <title>Profile du Patient</title>
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+  <?php
+  require '../includes/patient/aside.php';
+  ?>
+  <main class="main-content position-relative border-radius-lg ">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Profile</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Profile</h6>
+        </nav>
+      </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb-4">
+            <form method="post" class="shadow p-3 mt-5 form-w" action="profile_patient.php">
+              <h3>Edit Profile</h3>
+              <hr>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="text" class="form-control" value="<?= $patient['email'] ?>" name="email">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Nom</label>
+                <input type="text" class="form-control" value="<?= $patient['nom'] ?>" name="nom">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Prénom</label>
+                <input type="text" class="form-control" value="<?= $patient['prenom'] ?>" name="prenom">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">telephone</label>
+                <input type="text" class="form-control" value="<?= $patient['telephone'] ?>" name="telephone">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">adresse</label>
+                <input type="text" class="form-control" value="<?= $patient['adresse'] ?>" name="adresse">
+              </div>
+              <input type="hidden" value="<?php echo $patient['id_patient']; ?>" name="id_patient">
+
+
+              <button type="submit" class="btn btn-primary">
+                Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer class="footer pt-3">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                made with <i class="fa fa-heart"></i> by
+                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                for a better web.
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Core JS Files -->
+  <script src="../../dashboard/assets/js/core/popper.min.js"></script>
+  <script src="../../dashboard/assets/js/core/bootstrap.min.js"></script>
+  <script src="../../dashboard/assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../../dashboard/assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+</body>
+
+</html>
+
+<?php /*
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <?php 
     require '../includes/patient/header.php'; 
+    ?>
+    <title>Profile du Patient</title>
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+    <?php 
+    require '../includes/patient/aside.php';
+    ?>
+    <main class="main-content position-relative border-radius-lg ">
+        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+            <div class="container-fluid py-1 px-3">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+                        <li class="breadcrumb-item text-sm text-white active" aria-current="page">Profile</li>
+                    </ol>
+                    <h6 class="font-weight-bolder text-white mb-0">Profile</h6>
+                </nav>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0">
+                            <h6>Profile du Patient</h6>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <tr>
+                                        <td>ID:</td>
+                                        <td><?php echo htmlspecialchars($patient['id_patient']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nom:</td>
+                                        <td><?php echo htmlspecialchars($patient['nom']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Prénom:</td>
+                                        <td><?php echo htmlspecialchars($patient['prenom']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td><?php echo htmlspecialchars($patient['email']); ?></td>
+                                    </tr>
+                                    <!-- Ajoutez d'autres champs nécessaires -->
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer pt-3">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-content-lg-between">
+                        <div class="col-lg-6 mb-lg-0 mb-4">
+                            <div class="copyright text-center text-sm text-muted text-lg-start">
+                                © <script>
+                                    document.write(new Date().getFullYear())
+                                </script>,
+                                made with <i class="fa fa-heart"></i> by
+                                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                                for a better web.
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About Us</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted" target="_blank">License</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- Core JS Files -->
+    <script src="../../dashboard/assets/js/core/popper.min.js"></script>
+    <script src="../../dashboard/assets/js/core/bootstrap.min.js"></script>
+    <script src="../../dashboard/assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="../../dashboard/assets/js/plugins/smooth-scrollbar.min.js"></script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="../../dashboard/assets/js/argon-dashboard.min.js?v=2.0.4"></script>
+</body>
+
+</html>
+<?php /*
+function emaileIsUnique($email, $conn, $id_patient = 0)
+{
+  $sql = "SELECT email, id_patient FROM patients
+          WHERE email=?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$email]);
+
+  if ($id_patient == 0) {
+    if ($stmt->rowCount() >= 1) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else {
+    if ($stmt->rowCount() >= 1) {
+      $patient = $stmt->fetch();
+      if ($patient['id_patient'] == $id_patient) {
+        return 1;
+      } else {
+        return 0;
+      }
+    } else {
+      return 1;
+    }
+  }
+}
+if (
+  isset($_POST['email'])      &&
+  isset($_POST['nom'])      &&
+  isset($_POST['prenom'])   &&
+  isset($_POST['id_patient'])   &&
+  isset($_POST['telephone']) &&
+  isset($_POST['adresse'])
+) {
+
+
+  include "../connexion/connexion.php";
+  $email = $_POST['email'];
+  $nom = $_POST['nom'];
+  $prenom = $_POST['prenom'];
+  $adresse = $_POST['adresse'];
+  $telephone = $_POST['telephone'];
+  $id_patient = $_POST['id_patient'];
+  $data = 'id_patient=' . $id_patient;
+  if (empty($nom)) {
+    $em  = "Le nom est obligatoire !";
+    exit;
+  } else if (empty($prenom)) {
+    $em  = "Le prenom est obligatoire !";
+    exit;
+  } else if (empty($adresse)) {
+    $em  = "L'adresse est obligatoire !";
+    exit;
+  } else if (empty($email)) {
+    $em  = "L'email est obligatoire !";
+    exit;
+  } else if (empty($telephone)) {
+    $em  = "Le telephone est obligatoire !";
+    exit;
+  } else if (!emaileIsUnique($email, $conn, $id_patient = 0)) {
+    $em  = "Let email est utilisé";
+    exit;
+  } else {
+    $sql = "UPDATE patients SET
+                  email = ?, nom=?, prenom=?, adresse=?, telephone=?
+                  WHERE id_patient=?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$email, $nom, $prenom, $adresse, $telephone, $id_patient]);
+    $sm = "successfully updated!";
+    header("Location: ../profile.php?success=$sm&$data");
+    exit;
+  }
+} else {
+  $em = "An error occurred";
+  echo "fama ghalta !";
+  exit;
+}*/
+?>
+<?php /*
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <?php
+  require '../includes/patient/header.php';
   ?>
   <title>
     Profile
   </title>
- 
+
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-<div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg'); background-position-y: 50%;">
+  <div class="position-absolute w-100 min-height-300 top-0" style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg'); background-position-y: 50%;">
     <span class="mask bg-primary opacity-6"></span>
   </div>
   <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
@@ -25,9 +361,9 @@
       </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <?php 
+    <?php
     require '../includes/patient/aside.php';
-     ?>
+    ?>
     <div class="sidenav-footer mx-3 ">
       <div class="card card-plain shadow-none" id="sidenavCard">
         <img class="w-50 mx-auto" src="../assets/img/illustrations/icon-documentation.svg" alt="sidebar_illustration">
@@ -43,7 +379,7 @@
     </div>
   </aside>
   <div class="main-content position-relative max-height-vh-100 h-100">
-    
+
     <div class="card shadow-lg mx-4 card-profile-bottom">
       <div class="card-body p-3">
         <div class="row gx-4">
@@ -72,7 +408,7 @@
             <div class="card-header pb-0">
               <div class="d-flex align-items-center">
                 <p class="mb-0">Edit Profile</p>
-                <a href="profilemodifier.php"class="btn btn-primary btn-sm ms-auto">Modifier</a>
+                <a href="profilemodifier.php" class="btn btn-primary btn-sm ms-auto">Modifier</a>
               </div>
             </div>
             <div class="card-body">
@@ -144,7 +480,7 @@
             </div>
           </div>
         </div>
-        
+
       </div>
       <footer class="footer pt-3  ">
         <div class="container-fluid">
@@ -266,4 +602,5 @@
   <script src="../assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
 
-</html>
+</html>*/
+?>
