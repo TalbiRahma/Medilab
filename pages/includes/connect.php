@@ -5,7 +5,7 @@ function connect()
     try {
         $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
         $conn = new PDO($dsn, $user, $password, $options);
-        echo "Connected to the $db database successfully!";
+        //echo "Connected to the $db database successfully!";
         return $conn;
     } catch (PDOException $e) {
         $e->getMessage();

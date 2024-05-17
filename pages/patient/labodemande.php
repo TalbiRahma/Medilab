@@ -24,6 +24,7 @@ $statment->execute([
 ]); 
 
 header("Location: labolistdemande.php");
+exit();
 
 
 

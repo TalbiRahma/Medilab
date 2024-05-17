@@ -13,5 +13,5 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="../../dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
-  
+  <link href="/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link id="pagestyle" href="../../dashboard/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />

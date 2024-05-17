@@ -9,7 +9,7 @@
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="dashboard.php">
+          <a class="nav-link " href="dashboard.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
             </div>
@@ -17,9 +17,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a  href="profile.php">
+          <a class="nav-link " href="profile.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+            <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Profile</span>
           </a>
@@ -56,7 +56,7 @@
         <li class="nav-item">
           <a class="nav-link " href="medecin.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+            <i class="ni ni-app text-primary text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Médecins</span>
           </a>
@@ -72,7 +72,7 @@
         <li class="nav-item">
           <a class="nav-link " href="pharmacie.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-world-2 text-danger text-sm opacity-10"></i>
+            <i class="ni ni-app text-success text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Pharmacies</span>
           </a>
@@ -81,7 +81,7 @@
         <li class="nav-item">
           <a class="nav-link " href="labo.php">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+            <i class="ni ni-app text-danger text-sm opacity-10"></i>
             </div>
             <span class="nav-link-text ms-1">Laboratoires Médicaux</span>
           </a>

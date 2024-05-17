@@ -13,4 +13,4 @@
   <link href="../../dashboard/assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   
-  <link id="pagestyle" href="../../dashboard/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+  <link id="pagestyle" href="../../dashboard/assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" /><link href="/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">

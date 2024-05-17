@@ -14,5 +14,6 @@ $statment->execute([
     ':description' => $_POST['description']
 ]);
 
-//header("Location: medecinlistdemande.php"); 
+header("Location: medecinlistdemande.php");
+exit();
   

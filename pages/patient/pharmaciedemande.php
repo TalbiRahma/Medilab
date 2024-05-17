@@ -1,6 +1,6 @@
 <?php
 
-var_dump($_POST);
+//var_dump($_POST);
 
 require_once '../includes/connect.php';
 $target_dir = "../../ordonnances/";
@@ -21,4 +21,5 @@ $statment->execute([
     ':description' => $_POST['description']
 ]);
 
-//header("Location: pharmacielistdemande.php");
+header("Location: pharmacielistdemande.php");
+exit();
