@@ -11,13 +11,13 @@ $id_patient = $demande['id_patient'];
 $sql_patient = "SELECT * FROM patients WHERE id_patient=$id_patient ";
 $statement_patient = $pdo->query($sql_patient); 
 $patient = $statement_patient->fetch(PDO::FETCH_ASSOC);
-var_dump($patient);
+//var_dump($patient);
 
 $id_professionnel  = $demande['id_professionnel'];
 $sql_patient = "SELECT * FROM professionnels WHERE id_professionnel =$id_professionnel  ";
 $statement_patient = $pdo->query($sql_patient);
 $pro = $statement_patient->fetch(PDO::FETCH_ASSOC);
-var_dump($patient);
+//var_dump($patient);
 
 ?>
 <!DOCTYPE html>
@@ -137,6 +137,7 @@ var_dump($patient);
                   </div>
                 </div>
               </div>
+              <div class="row">
               <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">lieu</label>
@@ -153,6 +154,21 @@ var_dump($patient);
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Description</label>
                     <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['description']; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Etat</label>
+                    <?php
+                        if($demande['etat_demande']=="refuse"){
+                          echo ' <span class="badge bg-gradient-danger">'.$demande['etat_demande'].'</span>';
+                        }else if($demande['etat_demande']=="accepte") {
+                          echo '  <span class="badge bg-gradient-success">'.$demande['etat_demande'].'</span>';
+                        }else{
+                          echo '<span class="badge bg-gradient-info">'.$demande['etat_demande'].'</span>';
+                      }
+                    ?>
                   </div>
                 </div>
               </div>

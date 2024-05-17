@@ -122,9 +122,15 @@ foreach ($demandes as $demande) {
                           <span class="text-secondary text-xs font-weight-bold">'.$user['adresse'].'</span>
                         </div>
                         </td>
-                        <td >
-                            <span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>
-                        </td>
+                        <td >';
+                        if($d['etat_demande']=="refuse"){
+                          echo ' <span class="badge bg-gradient-danger">'.$d['etat_demande'].'</span>';
+                        }else if($d['etat_demande']=="accepte") {
+                          echo '  <span class="badge bg-gradient-success">'.$d['etat_demande'].'</span>';
+                        }else{
+                          echo '<span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>';
+                        }
+                        echo '
                         <td class="align-middle">
                         <div class="d-flex flex-column justify-content-center">
                           <a href="infirmierdemandedetails.php?id='.$id.'" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
@@ -133,7 +139,7 @@ foreach ($demandes as $demande) {
                         </div>
                         </td>
                       </tr>';
-                      
+                       
                     }
                     ?>
                   </tbody>

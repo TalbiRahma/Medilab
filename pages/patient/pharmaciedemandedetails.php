@@ -137,6 +137,7 @@ $pro = $statement_patient->fetch(PDO::FETCH_ASSOC);
                   </div>
                 </div>
               </div>
+              <div class="row">
               <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Télécharger</label>
@@ -147,6 +148,21 @@ $pro = $statement_patient->fetch(PDO::FETCH_ASSOC);
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Adresse livraison</label>
                     <p class="mb-0 font-weight-bold text-sm"><?php echo $demande['description']; ?></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="example-text-input" class="form-control-label">Etat</label>
+                    <?php
+                        if($demande['etat_demande']=="refuse"){
+                          echo ' <span class="badge bg-gradient-danger">'.$demande['etat_demande'].'</span>';
+                        }else if($demande['etat_demande']=="accepte") {
+                          echo '  <span class="badge bg-gradient-success">'.$demande['etat_demande'].'</span>';
+                        }else{
+                          echo '<span class="badge bg-gradient-info">'.$demande['etat_demande'].'</span>';
+                      }
+                    ?>
                   </div>
                 </div>
               </div>
