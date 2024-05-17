@@ -81,13 +81,6 @@ if (!$pharmacie) {
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
-            <div class="card-header pb-0">
-              <div class="d-flex align-items-center">
-                <p class="mb-0">Edit Profile</p>
-                <a href="profilemodifier.php"class="btn btn-primary btn-sm ms-auto">Modifier</a>
-              </div>
-            </div>
             <form method="post" class="shadow p-3 mt-5 form-w" action="profile_pharmacie.php">
               <h3>Edit Profile</h3>
               <hr>

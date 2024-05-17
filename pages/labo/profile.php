@@ -75,16 +75,6 @@ if (!$labo) {
               <img src="../assets/img/team-1.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
             </div>
           </div>
-          <div class="col-auto my-auto">
-            <div class="h-100">
-              <h5 class="mb-1">
-                Sayo Kravits
-              </h5>
-              <p class="mb-0 font-weight-bold text-sm">
-                Public Relations
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -93,11 +83,6 @@ if (!$labo) {
         <div class="col-md-12">
           <div class="card">
             <div class="card-header pb-0">
-              <div class="d-flex align-items-center">
-                <p class="mb-0">Edit Profile</p>
-                <a href="profilemodifier.php" class="btn btn-primary btn-sm ms-auto">Modifier</a>
-              </div>
-            </div>
             <form method="post" class="shadow p-3 mt-5 form-w" action="profile_labo.php">
               <h3>Edit Profile</h3>
               <hr>

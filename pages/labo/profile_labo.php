@@ -3,49 +3,59 @@ require '../includes/connect.php';
 $pdo = connect();
 session_start();
 
-// Assurez-vous que l'utilisateur est connecté
 if (!isset($_SESSION['email'])) {
-  header('Location: profile.php');
-  exit();
+    header('Location: profile.php');
+    exit();
 }
 
 $email = $_SESSION['email'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // Handle form submission
-  $nom = $_POST['nom'];
-  $telephone = $_POST['telephone'];
-  $adresse = $_POST['adresse'];
-  $id_professionnel = $_POST['id_professionnel']; // Correction : retirez l'espace après 'id_professionnel'
+    $nom = $_POST['nom'];
+    $telephone = $_POST['telephone'];
+    $adresse = $_POST['adresse'];
+    $id_professionnel = $_POST['id_professionnel'];
+    
+    try {
+        // Mise à jour dans la table professionnels
+        $sql_prof = "UPDATE professionnels SET nom = :nom, telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel";
+        $stmt_prof = $pdo->prepare($sql_prof);
+        $result_prof = $stmt_prof->execute([
+            ':nom' => $nom,
+            ':telephone' => $telephone,
+            ':adresse' => $adresse,
+            ':id_professionnel' => $id_professionnel
+        ]);
 
-  try {
-    // Update query
-    $sql = "UPDATE professionnels SET nom = :nom,telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel"; // Correction : retirez l'espace après 'id_professionnel'
-    $statement = $pdo->prepare($sql);
-    $result = $statement->execute([
-      ':nom' => $nom,
-      ':telephone' => $telephone,
-      ':adresse' => $adresse,
-      ':id_professionnel' => $id_professionnel // Correction : retirez l'espace après 'id_professionnel'
-    ]);
+        // Récupérer l'id_user à partir de l'email
+        $req_user = "SELECT id_user FROM users WHERE email = :email";
+        $stmt_user = $pdo->prepare($req_user);
+        $stmt_user->execute([':email' => $email]);
+        $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
+        $id_user = $user['id_user'];
 
-    if ($result) {
-      // Redirect to profile page after successful update
-      header('Location: profile.php');
-      exit();
-    } else {
-      // Handle update failure
-      echo "Échec de la mise à jour.";
-      exit();
+        $sql_user = "UPDATE users SET nom = :nom, telephone = :telephone, adresse = :adresse WHERE id_user = :id_user AND type_utilisateur = 'laboratoire'";
+        $stmt_user_update = $pdo->prepare($sql_user);
+        $result_user = $stmt_user_update->execute([
+            ':nom' => $nom,
+            ':telephone' => $telephone,
+            ':adresse' => $adresse,
+            ':id_user' => $id_user
+        ]);
+
+        if ($result_prof && $result_user) {
+            header('Location: profile.php');
+            exit();
+        } else {
+            echo "Échec de la mise à jour.";
+            exit();
+        }
+    } catch (PDOException $e) {
+        echo "Erreur : " . $e->getMessage();
+        exit();
     }
-  } catch (PDOException $e) {
-    // Handle database errors
-    echo "Erreur : " . $e->getMessage();
-    exit();
-  }
 }
 
-// If not a POST request, redirect to profile page
 header('Location: profile.php');
 exit();
 ?>

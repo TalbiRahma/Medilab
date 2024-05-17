@@ -12,27 +12,20 @@ $email = $_SESSION['email'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
     $telephone = $_POST['telephone'];
     $adresse = $_POST['adresse'];
-    $id_patient = $_POST['id_patient'];
-
+    $id_professionnel = $_POST['id_professionnel'];
+    
     try {
-        // Mise à jour dans la table patients
-        $sql_prof = "UPDATE patients SET nom = :nom, prenom = :prenom, telephone = :telephone, adresse = :adresse WHERE id_patient = :id_patient";
+        // Mise à jour dans la table professionnels
+        $sql_prof = "UPDATE professionnels SET nom = :nom, telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel";
         $stmt_prof = $pdo->prepare($sql_prof);
         $result_prof = $stmt_prof->execute([
             ':nom' => $nom,
-            ':prenom' => $prenom,
             ':telephone' => $telephone,
             ':adresse' => $adresse,
-            ':id_patient' => $id_patient
+            ':id_professionnel' => $id_professionnel
         ]);
-
-        if (!$result_prof) {
-            echo "Échec de la mise à jour de la table patients.";
-            exit();
-        }
 
         // Récupérer l'id_user à partir de l'email
         $req_user = "SELECT id_user FROM users WHERE email = :email";
@@ -41,14 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
         $id_user = $user['id_user'];
 
-        $sql_user = "UPDATE users SET nom = :nom, prenom =:prenom,telephone = :telephone, adresse = :adresse WHERE id_user = :id_user AND type_utilisateur = 'patient'";
+        // Mise à jour dans la table users
+        $sql_user = "UPDATE users SET nom = :nom, telephone = :telephone, adresse = :adresse WHERE id_user = :id_user AND type_utilisateur = 'infirmier'";
         $stmt_user_update = $pdo->prepare($sql_user);
         $result_user = $stmt_user_update->execute([
             ':nom' => $nom,
             ':telephone' => $telephone,
             ':adresse' => $adresse,
-            ':id_user' => $id_user,
-            ':prenom'=>$prenom
+            ':id_user' => $id_user
         ]);
 
         if ($result_prof && $result_user) {
@@ -58,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Échec de la mise à jour.";
             exit();
         }
-       } catch (PDOException $e) {
+    } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
         exit();
     }
