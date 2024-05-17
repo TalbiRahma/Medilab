@@ -14,15 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $telephone = $_POST['telephone'];
     $adresse = $_POST['adresse'];
+    $specialite = $_POST['specialite'];
     $id_professionnel = $_POST['id_professionnel'];
     
     try {
         // Mise à jour dans la table professionnels
-        $sql_prof = "UPDATE professionnels SET nom = :nom, telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel";
+        $sql_prof = "UPDATE professionnels SET nom = :nom, specialite = :specialite, telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel";
         $stmt_prof = $pdo->prepare($sql_prof);
         $result_prof = $stmt_prof->execute([
             ':nom' => $nom,
             ':telephone' => $telephone,
+            ':specialite' => $specialite,
             ':adresse' => $adresse,
             ':id_professionnel' => $id_professionnel
         ]);
