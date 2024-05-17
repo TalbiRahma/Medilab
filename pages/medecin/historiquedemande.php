@@ -5,6 +5,7 @@ $pdo = connect();
 
 session_start();
 $email = $_SESSION['email'];
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 
 // Récupérer l'ID du professionnel
 $requete_professionnel = "SELECT * FROM professionnels WHERE email='$email'";
@@ -176,6 +177,11 @@ foreach ($demandes as $demande) {
               <h6>Medecins demandes</h6>
               
             </div>
+            <?php if ($message): ?>
+                <div class="alert alert-info" role="alert">
+                    <strong>Succès !</strong> <?php echo htmlspecialchars($message); ?>
+                </div>
+            <?php endif; ?>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">

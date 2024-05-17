@@ -365,7 +365,7 @@ $laboratoires = $statement->fetchAll(PDO::FETCH_ASSOC);
                       <p class="mb-0">Remplir le formulaire de votre demande</p>
                     </div>
                     <div class="card-body">
-                      <form role="form text-left" action="labodemande.php" method="POST">
+                      <form role="form text-left" action="labodemande.php" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="id_patient" value="'.$user['id_patient'].'"/>
                         <input type="hidden" name="id_professionnel" value="'.$labo['id_professionnel'].'"/>
                         <label>Nom</label>

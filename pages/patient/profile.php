@@ -77,8 +77,6 @@ if (!$patient) {
                 <input type="text" class="form-control" value="<?= $patient['adresse'] ?>" name="adresse">
               </div>
               <input type="hidden" value="<?php echo $patient['id_patient']; ?>" name="id_patient">
-
-
               <button type="submit" class="btn btn-primary">
                 Update</button>
             </form>

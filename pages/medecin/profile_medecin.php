@@ -19,6 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $adresse = $_POST['adresse'];
   $id_professionnel = $_POST['id_professionnel']; // Correction : retirez l'espace après 'id_professionnel'
 
+  
+
   try {
     // Update query
     $sql = "UPDATE professionnels SET nom = :nom, prenom = :prenom, telephone = :telephone, adresse = :adresse WHERE id_professionnel = :id_professionnel"; // Correction : retirez l'espace après 'id_professionnel'

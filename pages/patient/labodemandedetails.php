@@ -238,7 +238,7 @@ var_dump($patient);
                     <label for="example-text-input" class="form-control-label">Adresse</label>
                     <p class="mb-0 font-weight-bold text-sm"><?php echo $patient['adresse']; ?></p>
                   </div>
-                </div>
+                </div> 
               </div>
               <div class="col-md-6">
                   <div class="form-group">

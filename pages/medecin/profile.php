@@ -80,7 +80,7 @@ if (!$medecin) {
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-md-12">
-        <form method="post" class="shadow p-3 mt-5 form-w" action="profile_medecin.php">
+        <form method="post" class="shadow p-3 mt-5 form-w" action="profile_medecin.php" enctype="multipart/form-data">
               <h3>Edit Profile</h3>
               <hr>
               <div class="mb-3">
@@ -108,8 +108,6 @@ if (!$medecin) {
                 <input type="text" class="form-control" value="<?= $medecin['specialite'] ?>" name="specialite">
               </div>
               <input type="hidden" value="<?php echo $medecin['id_professionnel']; ?>" name="id_professionnel">
-
-
               <button type="submit" class="btn btn-primary">
                 Update</button>
             </form>

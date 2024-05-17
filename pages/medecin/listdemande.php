@@ -174,7 +174,6 @@ foreach ($demandes as $demande) {
           <div class="card mb-4">
             <div class="card-header pb-0">
               <h6>Medecins demandes</h6>
-              
             </div>
             <div class="card-body px-0 pt-0 pb-2">
               <div class="table-responsive p-0">
@@ -186,6 +185,7 @@ foreach ($demandes as $demande) {
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom et Prenom de patient</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lieu</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date & Heure</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Etat</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Reponse</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Voir plus</th>
                     </tr>
@@ -227,9 +227,26 @@ foreach ($demandes as $demande) {
                         <td >
                         <p class="text-xs font-weight-bold mb-0">'.$d['date_souhaitee'].' '.$d['heure_souhaitee'].'</p>
                         </td>
-                        <td >
-                        <a href="accepterdemande.php?id='.$id.'" class="btn btn-success">Accepter</a>
-                        <a href="refuserdemande.php?id='.$id.'"  class="btn btn-danger">Refuser</a>
+                        <td >';
+                        if($d['etat_demande']=="refuse"){
+                          echo ' <span class="badge bg-gradient-danger">'.$d['etat_demande'].'</span>';
+                        }else if($d['etat_demande']=="accepte") {
+                          echo '  <span class="badge bg-gradient-success">'.$d['etat_demande'].'</span>';
+                        }else{
+                          echo '<span class="badge bg-gradient-info">'.$d['etat_demande'].'</span>';
+                        }
+                        echo '
+                        </td>
+                        <td >';
+                        if($d['etat_demande']=="refuse"){
+                          echo '<a href="accepterdemande.php?id='.$id.'" class="btn btn-success">Accepter</a>';
+                        }else if($d['etat_demande']=="accepte") {
+                          echo '<a href="refuserdemande.php?id='.$id.'"  class="btn btn-danger">Refuser</a>';
+                        }else{
+                          echo '<a href="accepterdemande.php?id='.$id.'" class="btn btn-success">Accepter</a>
+                          <a href="refuserdemande.php?id='.$id.'"  class="btn btn-danger">Refuser</a>';
+                        }
+                        echo '
                         </td>
                         <td class="align-middle">
                         <div class="d-flex flex-column justify-content-center">

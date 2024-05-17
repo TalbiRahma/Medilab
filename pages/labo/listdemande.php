@@ -229,7 +229,7 @@ foreach ($demandes as $demande) {
                         <p class="text-xs font-weight-bold mb-0">'.$d['date_souhaitee'].' '.$d['heure_souhaitee'].'</p>
                         </td>
                         <td >
-                        <p> <a href="" class="badge bg-gradient-primary"  style="margin-left: auto;" download="">ordonnance</a></p>
+                        <p> <a href="../../ordonnances/'. htmlspecialchars($d['ordonnance']) . '" class="badge bg-gradient-primary"  style="margin-left: auto;" download="">ordonnance</a></p>
                         
                         </td>
                         <td >

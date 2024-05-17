@@ -34,7 +34,7 @@ $labo = $statement->fetch(PDO::FETCH_ASSOC);
       </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <?php 
+    <?php  
     require '../includes/patient/aside.php';
      ?>
     <div class="sidenav-footer mx-3 ">
