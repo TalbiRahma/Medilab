@@ -7,4 +7,9 @@ $pdo = connect();
 $requete = "UPDATE demandes SET etat_demande = 'accepte' WHERE id_demande='$id_demande'";
 //echo $requete;
 $pdo->exec($requete);
-//  header("Location: ../historiquedemande.php");
+
+session_start();
+$_SESSION['message'] = "Demande acceptée avec succès";
+
+ header("Location: historiquedemande.php");
+ exit();
