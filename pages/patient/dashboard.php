@@ -41,7 +41,7 @@ $patient = $statement->fetch(PDO::FETCH_ASSOC);
           <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
         </nav>
         
-      </div>
+      </div> 
     </nav>
     <!-- End Navbar -->
     <div>
