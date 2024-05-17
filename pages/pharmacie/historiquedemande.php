@@ -1,5 +1,6 @@
 
 <?php
+require '../includes/protect.php';
 require '../includes/connect.php';
 $pdo = connect();
 

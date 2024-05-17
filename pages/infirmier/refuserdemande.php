@@ -1,5 +1,5 @@
 <?php
-var_dump($_GET);
+//var_dump($_GET);
 
 $id_demande = $_GET['id'];
 require '../includes/connect.php';

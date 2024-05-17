@@ -1,4 +1,5 @@
 <?php
+require '../includes/protect.php';;
 $iddemande=$_GET['id'];
 require '../includes/connect.php';
 $pdo = connect() ;

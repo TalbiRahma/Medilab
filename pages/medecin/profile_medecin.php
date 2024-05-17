@@ -1,4 +1,5 @@
 <?php
+
 require '../includes/connect.php';
 $pdo = connect();
 session_start();

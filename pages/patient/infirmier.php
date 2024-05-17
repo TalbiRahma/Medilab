@@ -1,4 +1,5 @@
 <?php
+require '../includes/protect.php';
 require '../includes/connect.php';
 $pdo = connect() ;
 $sql = 'SELECT * FROM professionnels WHERE type_professionnel="infirmier" ';
